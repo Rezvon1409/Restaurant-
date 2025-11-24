@@ -2,7 +2,6 @@ from django.db import models
 from accounts.models import CustomUser
 
 
-
 class Restaurant(models.Model):
     title = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
@@ -47,7 +46,7 @@ class Food(models.Model):
 
 
 
-class AddOn(models.Model):
+class Addon(models.Model):
     title = models.CharField(max_length=100)
     extra_price = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -106,7 +105,7 @@ class OrderItem(models.Model):
 
 class OrderItemAddOn(models.Model):
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name="addons")
-    addon = models.ForeignKey(AddOn, on_delete=models.CASCADE)
+    addon = models.ForeignKey(Addon, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.addon.title} for {self.order_item.food.title}"
