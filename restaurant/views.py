@@ -427,3 +427,59 @@ class OrderItemAddOnDetailAPIView(APIView):
             return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
         addon.delete()
         return Response({"message": "OrderItemAddOn deleted"}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+class AddonListCreateAPIView(APIView):
+    def get(self, request):
+        addons = Addon.objects.all()
+        serializer = AddonSerializer(addons, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = AddonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save() 
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddonDetailAPIView(APIView):
+    def get(self, request, pk):
+        try:
+            addon = Addon.objects.get(pk=pk)
+        except Addon.DoesNotExist:
+            return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = AddonSerializer(addon)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        try:
+            addon = Addon.objects.get(pk=pk)
+        except Addon.DoesNotExist:
+            return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = AddonSerializer(addon, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        try:
+            addon = Addon.objects.get(pk=pk)
+        except Addon.DoesNotExist:
+            return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = AddonSerializer(addon, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            addon = Addon.objects.get(pk=pk)
+        except Addon.DoesNotExist:
+            return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+        addon.delete()
+        return Response({"message": "AddOn deleted"}, status=status.HTTP_204_NO_CONTENT)

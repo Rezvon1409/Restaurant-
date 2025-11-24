@@ -1,15 +1,5 @@
 from django.urls import path
-from .views import (
-    RestaurantListCreateAPIView, RestaurantDetailAPIView,
-    DeliveryZoneListCreateAPIView, DeliveryZoneDetailAPIView,
-    CategoryListCreateAPIView, CategoryDetailAPIView,
-    FoodListCreateAPIView, FoodDetailAPIView,
-    AddOnListCreateAPIView, AddOnDetailAPIView,
-    PromocodeListCreateAPIView, PromocodeDetailAPIView,
-    OrderListCreateAPIView, OrderDetailAPIView,
-    OrderItemListCreateAPIView, OrderItemDetailAPIView,
-    OrderItemAddOnListCreateAPIView, OrderItemAddOnDetailAPIView
-)
+from .views import *
 
 urlpatterns = [
     path("restaurants/", RestaurantListCreateAPIView.as_view(), name="restaurant-list"),
@@ -20,8 +10,8 @@ urlpatterns = [
     path("categories/<int:pk>/", CategoryDetailAPIView.as_view(), name="category-detail"),
     path("foods/", FoodListCreateAPIView.as_view(), name="food-list"),
     path("foods/<int:pk>/", FoodDetailAPIView.as_view(), name="food-detail"),
-    path("addons/", AddOnListCreateAPIView.as_view(), name="addon-list"),
-    path("addons/<int:pk>/", AddOnDetailAPIView.as_view(), name="addon-detail"),
+    path("addons/", AddonListCreateAPIView.as_view(), name="addon-list"),
+    path("addons/<int:pk>/", AddonDetailAPIView.as_view(), name="addon-detail"),
     path("promocodes/", PromocodeListCreateAPIView.as_view(), name="promocode-list"),
     path("promocodes/<int:pk>/", PromocodeDetailAPIView.as_view(), name="promocode-detail"),
     path("orders/", OrderListCreateAPIView.as_view(), name="order-list"),
