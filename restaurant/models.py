@@ -9,7 +9,8 @@ class Restaurant(models.Model):
     open_time = models.TimeField()
     close_time = models.TimeField()
     delivery_base_price = models.DecimalField(max_digits=6, decimal_places=2)
-
+    image = models.ImageField(upload_to="restaurants/", blank=True, null=True)
+    
     def __str__(self):
         return self.title
 
@@ -40,7 +41,8 @@ class Food(models.Model):
     available = models.BooleanField(default=True)
     is_popular = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    image = models.ImageField(upload_to="foods/", blank=True, null=True)
+    
     def __str__(self):
         return self.title
 
