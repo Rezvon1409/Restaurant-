@@ -15,14 +15,12 @@ class Restaurant(models.Model):
         return self.title
 
 
-
 class DeliveryZone(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.title
-
 
 
 class Category(models.Model):
@@ -42,7 +40,7 @@ class Food(models.Model):
     is_popular = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="foods/", blank=True, null=True)
-    
+
     def __str__(self):
         return self.title
 
@@ -56,7 +54,6 @@ class Addon(models.Model):
         return self.title
 
 
-
 class Promocode(models.Model):
     code = models.CharField(max_length=50, unique=True)
     discount_percent = models.PositiveIntegerField()
@@ -64,7 +61,6 @@ class Promocode(models.Model):
 
     def __str__(self):
         return self.code
-
 
 
 class Order(models.Model):
