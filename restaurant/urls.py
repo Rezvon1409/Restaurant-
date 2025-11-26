@@ -1,9 +1,17 @@
 from django.urls import path
 from .views import *
 
+
 urlpatterns = [
     path("restaurants/", RestaurantListCreateAPIView.as_view()),
     path("restaurants/<int:pk>/", RestaurantDetailAPIView.as_view()),
+    path("profiles/<int:pk>/", ProfileDetailAPIView.as_view()),
+    path("reviews/", ReviewListCreateAPIView.as_view()),
+    path("reviews/<int:pk>/", ReviewDetailAPIView.as_view()),
+    path("carts/", CartListCreateAPIView.as_view()),
+    path("carts/<int:pk>/", CartDetailAPIView.as_view()),
+    path("payments/", PaymentTransactionListCreateAPIView.as_view()),
+    path("payments/<int:pk>/", PaymentTransactionDetailAPIView.as_view()),
     path("zones/", DeliveryZoneListCreateAPIView.as_view()),
     path("zones/<int:pk>/", DeliveryZoneDetailAPIView.as_view()),
     path("categories/", CategoryListCreateAPIView.as_view()),
@@ -18,6 +26,6 @@ urlpatterns = [
     path("orders/<int:pk>/", OrderDetailAPIView.as_view()),
     path("order-items/", OrderItemListCreateAPIView.as_view()),
     path("order-items/<int:pk>/", OrderItemDetailAPIView.as_view()),
-    path("order-item-addons/", OrderItemListCreateAPIView.as_view()),
-    path("order-item-addons/<int:pk>/", OrderItemDetailAPIView.as_view()),
+    path("orderitem-addons/", OrderItemAddOnListCreateAPIView.as_view()),
+    path("orderitem-addons/<int:pk>/", OrderItemAddOnDetailAPIView.as_view()),
 ]

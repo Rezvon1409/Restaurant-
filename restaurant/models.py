@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
+from django.core.exceptions import ValidationError
 
 
 class Restaurant(models.Model):
@@ -13,6 +14,75 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="profile")
+    avatar = models.ImageField(upload_to="profiles/", blank=True, null=True)
+    default_address = models.CharField(max_length=200, blank=True, null=True)
+    default_phone = models.CharField(max_length=20, blank=True, null=True)
+    favorite_foods = models.ManyToManyField("Food", blank=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
+
+
+class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    food = models.ForeignKey("Food", on_delete=models.CASCADE, related_name="reviews", null=True, blank=True)
+    restaurant = models.ForeignKey("Restaurant", on_delete=models.CASCADE, related_name="reviews", null=True, blank=True)
+    rating = models.PositiveIntegerField(default=1)
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if not self.food and not self.restaurant:
+            raise ValidationError("Review must be linked to either a Food or a Restaurant.")
+
+    def __str__(self):
+        return f"Review by {self.user.username} ({self.rating})"
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="cart")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def calculate_total(self):
+        subtotal = sum([item.food.price * item.quantity for item in self.items.all()])
+        addons_total = sum([
+            addon.extra_price
+            for item in self.items.all()
+            for addon in item.addons.all()
+        ])
+        return subtotal + addons_total
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
+    food = models.ForeignKey("Food", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    addons = models.ManyToManyField("Addon", blank=True)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.food.title}"
+
+
+class PaymentTransaction(models.Model):
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("success", "Success"),
+        ("failed", "Failed"),
+    )
+
+    order = models.OneToOneField("Order", on_delete=models.CASCADE, related_name="payment")
+    method = models.CharField(max_length=50)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Payment for Order {self.order.id} - {self.status}"
 
 
 class DeliveryZone(models.Model):
@@ -101,11 +171,10 @@ class Order(models.Model):
             subtotal -= subtotal * (self.promo.discount_percent / 100)
         if self.zone:
             self.delivery_price = self.zone.price
-        self.total_price = subtotal + self.delivery_price
-        return self.total_price
+        return subtotal + self.delivery_price
 
     def save(self, *args, **kwargs):
-        self.calculate_total()
+        self.total_price = self.calculate_total()
         super().save(*args, **kwargs)
 
 

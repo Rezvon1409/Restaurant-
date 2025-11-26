@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializer import *
 
+
 class RestaurantListCreateAPIView(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
@@ -26,6 +27,89 @@ class RestaurantDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Restaurant"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Profile"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class ReviewListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @swagger_auto_schema(tags=["Review"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["Review"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class ReviewDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @swagger_auto_schema(tags=["Review"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class CartListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Cart"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["Cart"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class CartDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Cart"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+
+class PaymentTransactionListCreateAPIView(generics.ListCreateAPIView):
+    queryset = PaymentTransaction.objects.all()
+    serializer_class = PaymentTransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["PaymentTransaction"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["PaymentTransaction"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class PaymentTransactionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PaymentTransaction.objects.all()
+    serializer_class = PaymentTransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["PaymentTransaction"])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -183,6 +267,7 @@ class OrderDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return super().get(request, *args, **kwargs)
 
 
+
 class OrderItemListCreateAPIView(generics.ListCreateAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
@@ -208,6 +293,20 @@ class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class OrderItemAddOnListCreateAPIView(generics.ListCreateAPIView):
+    queryset = OrderItemAddOn.objects.all()
+    serializer_class = OrderItemAddOnSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["OrderItemAddOn"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["OrderItemAddOn"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class OrderItemAddOnDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItemAddOn.objects.all()
     serializer_class = OrderItemAddOnSerializer
     permission_classes = [permissions.IsAuthenticated]
