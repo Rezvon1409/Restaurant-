@@ -1,12 +1,13 @@
 from rest_framework import generics, permissions
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializer import *
-
 
 class RestaurantListCreateAPIView(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Restaurant"])
@@ -21,6 +22,7 @@ class RestaurantListCreateAPIView(generics.ListCreateAPIView):
 class RestaurantDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Restaurant"])
@@ -55,6 +57,7 @@ class DeliveryZoneDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Category"])
@@ -69,6 +72,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
 class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Category"])
@@ -79,6 +83,7 @@ class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class FoodListCreateAPIView(generics.ListCreateAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Food"])
@@ -93,6 +98,7 @@ class FoodListCreateAPIView(generics.ListCreateAPIView):
 class FoodDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Food"])
@@ -103,6 +109,7 @@ class FoodDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class AddonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Addon.objects.all()
     serializer_class = AddonSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Addon"])
@@ -117,6 +124,7 @@ class AddonListCreateAPIView(generics.ListCreateAPIView):
 class AddonDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Addon.objects.all()
     serializer_class = AddonSerializer
+    parser_classes = [MultiPartParser, FormParser]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Addon"])

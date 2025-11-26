@@ -5,7 +5,7 @@ from .models import *
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ("id", "title", "address", "phone", "open_time", "close_time", "delivery_base_price", "image")
+        fields = "__all__"  
 
 
 class DeliveryZoneSerializer(serializers.ModelSerializer):
@@ -17,19 +17,21 @@ class DeliveryZoneSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ("id", "title")
+        fields = ("id", "title", "image")   
 
 
 class FoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food
-        fields = ("id", "category", "title", "description", "price", "available", "is_popular", "created_at", "image")
+        fields = "__all__"  
+
 
 
 class AddonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Addon
-        fields = ("id", "title", "extra_price")
+        fields = ("id", "title", "extra_price", "image")   
+
 
 
 class PromocodeSerializer(serializers.ModelSerializer):
@@ -62,4 +64,4 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("id", "user", "phone", "address", "zone","payment_method", "status", "promo","delivery_price", "total_price", "created_at", "items")
+        fields = ("id","user","phone","address","zone","payment_method","status","promo","delivery_price","total_price","created_at","items",)
