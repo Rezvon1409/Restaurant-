@@ -2,39 +2,32 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    # Restaurant
     path("restaurants/", RestaurantListCreateAPIView.as_view(), name="restaurant-list"),
     path("restaurants/<int:pk>/", RestaurantDetailAPIView.as_view(), name="restaurant-detail"),
 
-    # Delivery Zone
     path("zones/", DeliveryZoneListCreateAPIView.as_view(), name="zone-list"),
     path("zones/<int:pk>/", DeliveryZoneDetailAPIView.as_view(), name="zone-detail"),
 
-    # Category
+
     path("categories/", CategoryListCreateAPIView.as_view(), name="category-list"),
     path("categories/<int:pk>/", CategoryDetailAPIView.as_view(), name="category-detail"),
 
-    # Food
     path("foods/", FoodListCreateAPIView.as_view(), name="food-list"),
     path("foods/<int:pk>/", FoodDetailAPIView.as_view(), name="food-detail"),
 
-    # Addon
     path("addons/", AddonListCreateAPIView.as_view(), name="addon-list"),
     path("addons/<int:pk>/", AddonDetailAPIView.as_view(), name="addon-detail"),
 
-    # Promocode
+
     path("promocodes/", PromocodeListCreateAPIView.as_view(), name="promocode-list"),
     path("promocodes/<int:pk>/", PromocodeDetailAPIView.as_view(), name="promocode-detail"),
 
-    # Order
     path("orders/", OrderListCreateAPIView.as_view(), name="order-list"),
     path("orders/<int:pk>/", OrderDetailAPIView.as_view(), name="order-detail"),
 
-    # Order Item
     path("order-items/", OrderItemListCreateAPIView.as_view(), name="orderitem-list"),
     path("order-items/<int:pk>/", OrderItemDetailAPIView.as_view(), name="orderitem-detail"),
 
-    # Order Item AddOn
     path("order-item-addons/", OrderItemListCreateAPIView.as_view(), name="orderitemaddon-list"),
     path("order-item-addons/<int:pk>/", OrderItemDetailAPIView.as_view(), name="orderitemaddon-detail"),
 ]
