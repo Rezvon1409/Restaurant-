@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
+from django.db.models import Sum
 
 
 class Restaurant(models.Model):
@@ -10,7 +11,7 @@ class Restaurant(models.Model):
     close_time = models.TimeField()
     delivery_base_price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to="restaurants/", blank=True, null=True)
-    
+
     def __str__(self):
         return self.title
 
@@ -30,7 +31,6 @@ class Category(models.Model):
         return self.title
 
 
-
 class Food(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="foods")
     title = models.CharField(max_length=100)
@@ -43,7 +43,6 @@ class Food(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 class Addon(models.Model):
@@ -89,6 +88,29 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} by {self.user.username}"
 
+    def calculate_total(self):
+
+        subtotal = sum([item.quantity * item.price_at_order for item in self.items.all()])
+
+        addons_total = sum([
+            addon.addon.extra_price
+            for item in self.items.all()
+            for addon in item.addons.all()
+        ])
+        subtotal += addons_total
+
+        if self.promo:
+            subtotal -= subtotal * (self.promo.discount_percent / 100)
+
+        if self.zone:
+            self.delivery_price = self.zone.price
+
+        self.total_price = subtotal + self.delivery_price
+        return self.total_price
+
+    def save(self, *args, **kwargs):
+        self.calculate_total()
+        super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
@@ -100,6 +122,12 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.food.title}"
 
+    def save(self, *args, **kwargs):
+        if not self.price_at_order:
+            self.price_at_order = self.food.price
+        super().save(*args, **kwargs)
+        self.order.save()
+
 
 class OrderItemAddOn(models.Model):
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name="addons")
@@ -107,3 +135,14 @@ class OrderItemAddOn(models.Model):
 
     def __str__(self):
         return f"{self.addon.title} for {self.order_item.food.title}"
+
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.order_item.order.save()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        self.order_item.order.save()
+
+

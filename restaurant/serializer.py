@@ -5,7 +5,7 @@ from .models import *
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ("id", "title", "address", "phone", "open_time", "close_time", "delivery_base_price")
+        fields = ("id", "title", "address", "phone", "open_time", "close_time", "delivery_base_price", "image")
 
 
 class DeliveryZoneSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class FoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food
-        fields = ("id", "category", "title", "description", "price", "available", "is_popular", "created_at")
+        fields = ("id", "category", "title", "description", "price", "available", "is_popular", "created_at", "image")
 
 
 class AddonSerializer(serializers.ModelSerializer):
@@ -39,18 +39,27 @@ class PromocodeSerializer(serializers.ModelSerializer):
 
 
 class OrderItemAddOnSerializer(serializers.ModelSerializer):
+    addon = AddonSerializer(read_only=True)
+
     class Meta:
         model = OrderItemAddOn
         fields = ("id", "order_item", "addon")
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    food = FoodSerializer(read_only=True)
+    addons = OrderItemAddOnSerializer(many=True, read_only=True)
+
     class Meta:
         model = OrderItem
         fields = ("id", "order", "food", "quantity", "price_at_order", "addons")
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
+    zone = DeliveryZoneSerializer(read_only=True)
+    promo = PromocodeSerializer(read_only=True)
+
     class Meta:
         model = Order
-        fields = ("id","user","phone","address","zone","payment_method","status","promo","delivery_price","total_price","created_at","items",)
+        fields = ("id", "user", "phone", "address", "zone","payment_method", "status", "promo","delivery_price", "total_price", "created_at", "items")

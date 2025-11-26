@@ -4,7 +4,6 @@ from .models import *
 from .serializer import *
 
 
-
 class RestaurantListCreateAPIView(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
@@ -27,7 +26,6 @@ class RestaurantDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     @swagger_auto_schema(tags=["Restaurant"])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-
 
 
 class DeliveryZoneListCreateAPIView(generics.ListCreateAPIView):
@@ -54,7 +52,6 @@ class DeliveryZoneDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return super().get(request, *args, **kwargs)
 
 
-
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -79,7 +76,6 @@ class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return super().get(request, *args, **kwargs)
 
 
-
 class FoodListCreateAPIView(generics.ListCreateAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
@@ -102,60 +98,6 @@ class FoodDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     @swagger_auto_schema(tags=["Food"])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-
-
-
-class OrderListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @swagger_auto_schema(tags=["Order"])
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    @swagger_auto_schema(tags=["Order"])
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-class OrderDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @swagger_auto_schema(tags=["Order"])
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-
-
-class OrderItemListCreateAPIView(generics.ListCreateAPIView):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @swagger_auto_schema(tags=["OrderItem"])
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    @swagger_auto_schema(tags=["OrderItem"])
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
-class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @swagger_auto_schema(tags=["OrderItem"])
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
 
 
 class AddonListCreateAPIView(generics.ListCreateAPIView):
@@ -202,5 +144,66 @@ class PromocodeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(tags=["Promocode"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class OrderListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Order"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["Order"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class OrderDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Order"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class OrderItemListCreateAPIView(generics.ListCreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["OrderItem"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=["OrderItem"])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class OrderItemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["OrderItem"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class OrderItemAddOnListCreateAPIView(generics.ListCreateAPIView):
+    queryset = OrderItemAddOn.objects.all()
+    serializer_class = OrderItemAddOnSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(tags=["OrderItemAddOn"])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
